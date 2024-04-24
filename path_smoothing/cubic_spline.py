@@ -26,21 +26,21 @@ class CubicSpline:
         return s
 
     def compute_position(self, s):
-        x = self.sx.calculate_position(s)
-        y = self.sy.calculate_position(s)
+        x = self.sx.find_position(s)
+        y = self.sy.find_position(s)
         if hasattr(self, 'sz'):
-            z = self.sz.calculate_position(s)
+            z = self.sz.find_position(s)
             return x, y, z
         return x, y
 
     def compute_curvature(self, s):
-        dx = self.sx.compute_d(s)
-        ddx = self.sx.compute_dd(s)
-        dy = self.sy.compute_d(s)
-        ddy = self.sy.compute_dd(s)
+        dx = self.sx.get_dt(s)
+        ddx = self.sx.get_ddt(s)
+        dy = self.sy.get_dt(s)
+        ddy = self.sy.get_ddt(s)
         if hasattr(self, 'sz'):
-            dz = self.sz.compute_d(s)
-            ddz = self.sz.compute_dd(s)
+            dz = self.sz.get_dt(s)
+            ddz = self.sz.get_ddt(s)
             k_numerator = (ddy * dx - ddx * dy) * dz - (ddz * dx - ddx * dz) * dy
             k_denominator = (dx ** 2 + dy ** 2 + dz ** 2) ** 1.5
         else:
@@ -52,10 +52,10 @@ class CubicSpline:
         return k
 
     def compute_orientation(self, s):
-        dx = self.sx.compute_d(s)
-        dy = self.sy.compute_d(s)
+        dx = self.sx.get_dt(s)
+        dy = self.sy.get_dt(s)
         if hasattr(self, 'sz'):
-            dz = self.sz.compute_d(s)
+            dz = self.sz.get_dt(s)
             roll = math.atan2(dz, dy)
             pitch = math.atan2(dx, dz)
             yaw = math.atan2(dy, dx)
@@ -65,23 +65,23 @@ class CubicSpline:
             return 0, 0, yaw
 
     def compute_yaw(self, s):
-        dx = self.sx.compute_d(s)
-        dy = self.sy.compute_d(s)
+        dx = self.sx.get_dt(s)
+        dy = self.sy.get_dt(s)
         yaw = math.atan2(dy, dx)
         return yaw
 
     def compute_roll(self, s):
         if hasattr(self, 'sz'):
-            dy = self.sy.compute_d(s)
-            dz = self.sz.compute_d(s)
+            dy = self.sy.get_dt(s)
+            dz = self.sz.get_dt(s)
             roll = math.atan2(dz, dy)
             return roll
         return 0
 
     def compute_pitch(self, s):
         if hasattr(self, 'sz'):
-            dx = self.sx.compute_d(s)
-            dz = self.sz.compute_d(s)
+            dx = self.sx.get_dt(s)
+            dz = self.sz.get_dt(s)
             pitch = math.atan2(dx, dz)
             return pitch
         return 0

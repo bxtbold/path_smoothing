@@ -13,22 +13,20 @@ class Spline:
         self.nx = len(x)
         h = np.diff(x)
 
-        # calc coefficient c
+        # compute coefficient c
         self.a = [iy for iy in y]
-
-        # calc coefficient c
         A = self.__compute_A(h)
         B = self.__compute_B(h)
         self.c = np.linalg.solve(A, B)
 
-        # calc spline coefficient b and d
+        # compute spline coefficient b and d
         for i in range(self.nx - 1):
             self.d.append((self.c[i + 1] - self.c[i]) / (3.0 * h[i]))
             tb = (self.a[i + 1] - self.a[i]) / h[i] - h[i] * \
                 (self.c[i + 1] + 2.0 * self.c[i]) / 3.0
             self.b.append(tb)
 
-    def calculate_position(self, t):
+    def find_position(self, t):
 
         if t < self.x[0]:
             return None
@@ -42,9 +40,9 @@ class Spline:
 
         return result
 
-    def compute_d(self, t):
+    def get_dt(self, t):
         """
-        Calculate first derivative
+        find first derivative
 
         if t is outside of the input x, return None
         """
@@ -58,9 +56,9 @@ class Spline:
         result = self.b[i] + 2.0 * self.c[i] * dx + 3.0 * self.d[i] * dx ** 2.0
         return result
 
-    def compute_dd(self, t):
+    def get_ddt(self, t):
         """
-        Calculate second derivative
+        find second derivative
         """
         if t < self.x[0]:
             return None
@@ -106,4 +104,3 @@ class Spline:
                 h[i + 1] - 3.0 * (self.a[i + 1] - self.a[i]) / h[i]
 
         return B
-
