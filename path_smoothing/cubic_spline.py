@@ -8,8 +8,10 @@ class CubicSpline:
         self.s = self.__compute_s(x, y, z)
         self.sx = Spline(self.s, x)
         self.sy = Spline(self.s, y)
+        self.dimension = 2
         if z:
             self.sz = Spline(self.s, z)
+            self.dimension += 1
 
     def __compute_s(self, x, y, z=None):
         dx = np.diff(x)
@@ -24,6 +26,18 @@ class CubicSpline:
         s = [0]
         s.extend(np.cumsum(self.ds))
         return s
+
+    def interpolate(self, density=0.1):
+        s = np.arange(0, self.s[-1], density)
+
+        interp_points = [[] for _ in range(self.dimension)]
+
+        for i_s in s:
+            position = self.compute_position(i_s)
+            for i in range(len(position)):
+                interp_points[i].append(position[i])
+
+        return interp_points
 
     def compute_position(self, s):
         x = self.sx.compute_position(s)
