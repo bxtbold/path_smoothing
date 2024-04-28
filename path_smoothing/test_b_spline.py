@@ -1,20 +1,12 @@
 import matplotlib.pyplot as plt
-import random
 
 from b_spline import b_spline_interpolate, b_spline_approximate
-
-
-def generate_data(dimension, point_number):
-    data = []
-    for _ in range(dimension):
-        data.append([random.randint(-10, 10) for _ in range(point_number)])
-
-    return data
+from utils.generate import generate_control_points
 
 
 def plot_spline2d_test(control_points):
-    b_spline = b_spline_interpolate(*control_points, number_of_points=1000)
-    b_spline_app = b_spline_approximate(*control_points, number_of_points=1000)
+    b_spline = b_spline_interpolate(*control_points, n_points=1000)
+    b_spline_app = b_spline_approximate(*control_points, n_points=1000)
 
     # Plot the points
     plt.plot(*b_spline, ".r", label="B-Spline Interploted")
@@ -25,8 +17,8 @@ def plot_spline2d_test(control_points):
 
 
 def plot_spline3d_test(control_points):
-    b_spline = b_spline_interpolate(*control_points, number_of_points=1000)
-    b_spline_app = b_spline_approximate(*control_points, number_of_points=1000)
+    b_spline = b_spline_interpolate(*control_points, n_points=1000)
+    b_spline_app = b_spline_approximate(*control_points, n_points=1000)
 
     # Plot the points
     fig = plt.figure()
@@ -40,7 +32,7 @@ def plot_spline3d_test(control_points):
 
 
 if __name__ == '__main__':
-    data_2d = generate_data(dimension=2, point_number=10)
-    plot_spline2d_test(data_2d)
-    data_3d = generate_data(dimension=3, point_number=10)
-    plot_spline3d_test(data_3d)
+    control_points_2d = generate_control_points(dimension=2, point_number=10)
+    plot_spline2d_test(control_points_2d)
+    control_points_3d = generate_control_points(dimension=3, point_number=10)
+    plot_spline3d_test(control_points_3d)
