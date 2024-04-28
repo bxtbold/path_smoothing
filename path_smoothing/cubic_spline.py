@@ -26,10 +26,10 @@ class CubicSpline:
         return s
 
     def compute_position(self, s):
-        x = self.sx.find_position(s)
-        y = self.sy.find_position(s)
+        x = self.sx.compute_position(s)
+        y = self.sy.compute_position(s)
         if hasattr(self, 'sz'):
-            z = self.sz.find_position(s)
+            z = self.sz.compute_position(s)
             return x, y, z
         return x, y
 

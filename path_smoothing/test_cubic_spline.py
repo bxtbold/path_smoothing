@@ -47,5 +47,5 @@ def plot_spline3d_test(data):
 if __name__ == '__main__':
     control_points_2d = generate_control_points(dimension=2, point_number=10)
     plot_spline2d_test(control_points_2d)
-    control_points_3d = generate_control_points(dimension=3, point_number=10)
+    control_points_3d = generate_control_points(dimension=3, point_number=10, should_x_sequantial=False)
     plot_spline3d_test(control_points_3d)
